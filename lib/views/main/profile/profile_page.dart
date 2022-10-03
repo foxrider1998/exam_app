@@ -14,17 +14,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF3F7F8),
       appBar: AppBar(
         elevation: 1,
-        title: const Text("Akun Saya"),
+        title: Text("Akun Saya"),
         actions: [
           TextButton(
             onPressed: () {},
-            child: const Text(
+            child: Text(
               "Edit",
               style: TextStyle(
                 color: Colors.white,
@@ -55,14 +56,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         "Nama User",
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
-                      const Text(
+                      Text(
                         "Nama Sekolah User",
                         style: TextStyle(
                           fontSize: 15,
@@ -102,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Nama Lengkap",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -110,9 +111,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text("Nama Lengkap User"),
+                Text(user!.displayName!),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   "Email",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -120,9 +121,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text("User@Email.com"),
+                Text("${user?.email}"),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   "Jenis Kelamin",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -130,18 +131,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text("Laki-laki"),
+                Text("${user?.multiFactor}"),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   "Kelas",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
                 ),
-                const Text("XI - MIPA"),
+                Text("XI - MIPA"),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   "Sekolah",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -149,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text("SMA 1 Jakarta"),
+                Text("SMA 1 Jakarta"),
               ],
             ),
           ),

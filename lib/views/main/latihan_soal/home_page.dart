@@ -2,6 +2,7 @@
 
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/views/main/latihan_soal/mapel_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -139,6 +140,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Padding _buildUserHomeProfile() {
+    final user = FirebaseAuth.instance.currentUser;
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 15,
@@ -151,7 +153,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Hi, Nama User",
+                  "Hi, ${user?.displayName}",
                   style: GoogleFonts.poppins().copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -166,8 +168,10 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Image.asset(
-            R.assets.imgUser,
+          Image.network(
+            "${user?.photoURL}",
+            // Image.asset(
+            // R.assets.imgUser,
             height: 45,
             width: 45,
           ),

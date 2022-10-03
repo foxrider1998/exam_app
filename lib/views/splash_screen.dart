@@ -25,17 +25,16 @@ class SplashScreen extends StatelessWidget {
     Timer(
       const Duration(seconds: 2),
       () {
-        print("sini ok");
         // Navigator.of(context).push(
         //   MaterialPageRoute(builder: (context) => LoginPage()),
         // );
         final user = FirebaseAuth.instance.currentUser;
-        print(user);
+
         if (user != null) {
           // Redirect Register or Home
           Navigator.of(context).pushNamed(MainPage.route);
         } else {
-          Navigator.of(context).pushNamed(RegisterPage.route);
+          Navigator.of(context).pushNamed(LoginPage.route);
         }
       },
     );

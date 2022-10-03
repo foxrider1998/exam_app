@@ -17,12 +17,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
-
+    print("googleUser");
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
@@ -85,8 +85,10 @@ class _LoginPageState extends State<LoginPage> {
             ButtonLogin(
               // Login with Google
               onTap: () async {
+                print("google dipencet");
                 await signInWithGoogle();
 
+                print("google bar dipencet");
                 final user = FirebaseAuth.instance.currentUser;
                 if (user != null) {
                   Navigator.of(context)

@@ -1,8 +1,10 @@
 import 'package:exam_app/constants/r.dart';
+import 'package:exam_app/firebase_options.dart';
 import 'package:exam_app/views/main/diskusi/chat_page.dart';
 import 'package:exam_app/views/main/latihan_soal/home_page.dart';
 import 'package:exam_app/views/main/profile/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -13,6 +15,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  @override
+  // Future<void> initState() async {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  // }
+
   final _pc = PageController();
   int index = 0;
 

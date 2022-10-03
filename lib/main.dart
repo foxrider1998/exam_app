@@ -1,8 +1,15 @@
+import 'package:exam_app/views/login_page.dart';
+import 'package:exam_app/views/main/latihan_soal/mapel_page.dart';
+import 'package:exam_app/views/main_page.dart';
+import 'package:exam_app/views/register_page.dart';
 import 'package:exam_app/views/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +32,16 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const SplashScreen(),
+        LoginPage.route: (context) => const LoginPage(),
+        RegisterPage.route: (context) => const RegisterPage(),
+        MainPage.route: (context) => const MainPage(),
+        MapelPage.route: (context) => const MapelPage(),
+        // PakeSoalPage.route: (context) => const PakeSoalPage(),
+      },
     );
   }
 }

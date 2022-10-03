@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, sort_child_properties_last
 
 import 'package:exam_app/constants/r.dart';
+import 'package:exam_app/views/main_page.dart';
 import 'package:exam_app/views/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -119,11 +120,11 @@ class _LoginPageState extends State<LoginPage> {
                 print("google dipencet");
                 await signInWithGoogle();
 
-                print("google bar dipencet");
                 final user = FirebaseAuth.instance.currentUser;
                 if (user != null) {
-                  Navigator.of(context)
-                      .pushReplacementNamed(RegisterPage.route);
+                  print("sini print usernya");
+                  print(user);
+                  Navigator.of(context).pushReplacementNamed(MainPage.route);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

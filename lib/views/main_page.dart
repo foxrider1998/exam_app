@@ -113,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                         height: 30,
                       ),
                     ),
-                    const Text("Diskusi"),
+                    const Text("Discus"),
                   ],
                 ),
               ),

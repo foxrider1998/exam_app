@@ -1,6 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, sort_child_properties_last
 
 import 'package:exam_app/constants/r.dart';
+import 'package:exam_app/helpers/preference_helper.dart';
+import 'package:exam_app/helpers/user_email.dart';
+import 'package:exam_app/models/network_response.dart';
+import 'package:exam_app/models/user_by_email.dart';
+import 'package:exam_app/repository/auth_api.dart';
 import 'package:exam_app/views/login_page.dart';
 import 'package:exam_app/views/main_page.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +14,22 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
   static String route = "register_page";
   @override
-  State<RegisterPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-enum Gender { lakilaki, perempuan }
+enum Gender { lakiLaki, perempuan }
 
-class _LoginPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  List<String> classSlta = ["10", "11", "12"];
+
   String gender = "Laki-laki";
-  List<String> Kelas = ["10", "11", "12"];
   String selectedClass = "10";
-
   final emailController = TextEditingController();
+  final schoolNameController = TextEditingController();
+  final fullNameController = TextEditingController();
 
   onTapGender(Gender genderInput) {
-    if (genderInput == Gender.lakilaki) {
+    if (genderInput == Gender.lakiLaki) {
       gender = "Laki-laki";
     } else {
       gender = "Perempuan";
@@ -30,30 +37,36 @@ class _LoginPageState extends State<RegisterPage> {
     setState(() {});
   }
 
+  initDataUSer() {
+    emailController.text = UserEmail.getUserEmail()!;
+    fullNameController.text = UserEmail.getUserDisplayName()!;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initDataUSer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF3F7F8),
-      // resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xfff0f3f5),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight + 20),
+        preferredSize: Size.fromHeight(kToolbarHeight + 20),
         child: AppBar(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-          ),
-          elevation: 2,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25.0),
+                  bottomRight: Radius.circular(25.0))),
+          elevation: 0,
           backgroundColor: Colors.white,
-          iconTheme: const IconThemeData(color: Colors.black),
-          title: const Text(
-            "Yuk isi data diri",
+          iconTheme: IconThemeData(color: Colors.black),
+          title: Text(
+            "Yuk isi data diri!",
             style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-            ),
+                color: Colors.black, fontWeight: FontWeight.w700, fontSize: 18),
           ),
         ),
       ),
@@ -63,54 +76,55 @@ class _LoginPageState extends State<RegisterPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const RegisterTextField(
-                title: 'Nama Lengkap',
-                hintText: 'Masukan nama anda',
+              RegisterTextField(
+                controller: emailController,
+                hintText: 'Email Anda',
+                title: "Email",
+                enabled: false,
               ),
-              const RegisterTextField(
-                // controller: emailController,
-                title: 'Email',
-                hintText: 'Masukan email anda',
+              RegisterTextField(
+                hintText: 'Nama Lengkap Anda',
+                title: "Nama Lengkap",
+                controller: fullNameController,
               ),
-              const Text(
+              SizedBox(height: 5),
+              Text(
                 "Jenis Kelamin",
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: 5),
               Row(
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
-                          backgroundColor: gender == "Laki-laki"
-                              ? Colors.blue
-                              : Colors.white,
+                          backgroundColor:
+                              gender.toLowerCase() == "Laki-laki".toLowerCase()
+                                  ? R.colors.primary
+                                  : Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
-                            side: const BorderSide(
-                              width: 1,
-                              color: Colors.black,
-                            ),
+                            side: BorderSide(
+                                width: 1, color: R.colors.greyBorder),
                           ),
                         ),
                         onPressed: () {
-                          onTapGender(Gender.lakilaki);
+                          onTapGender(Gender.lakiLaki);
                         },
                         child: Text(
                           "Laki-laki",
                           style: TextStyle(
-                            fontSize: 18,
-                            color: gender == "Laki-laki"
+                            fontSize: 14,
+                            color: gender.toLowerCase() ==
+                                    "Laki-laki".toLowerCase()
                                 ? Colors.white
-                                : Colors.black,
+                                : Color(0xff282828),
                           ),
                         ),
                       ),
@@ -118,21 +132,17 @@ class _LoginPageState extends State<RegisterPage> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
                           backgroundColor: gender == "Perempuan"
-                              ? Colors.blue
+                              ? R.colors.primary
                               : Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
-                            side: const BorderSide(
-                              width: 1,
-                              color: Colors.black,
-                            ),
+                            side: BorderSide(
+                                width: 1, color: R.colors.greyBorder),
                           ),
                         ),
                         onPressed: () {
@@ -141,10 +151,10 @@ class _LoginPageState extends State<RegisterPage> {
                         child: Text(
                           "Perempuan",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             color: gender == "Perempuan"
                                 ? Colors.white
-                                : Colors.black,
+                                : Color(0xff282828),
                           ),
                         ),
                       ),
@@ -152,66 +162,96 @@ class _LoginPageState extends State<RegisterPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
-              const Text(
-                "Jenis Kelamin",
+              SizedBox(height: 5),
+              Text(
+                "Kelas",
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 15),
+              SizedBox(height: 5),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: R.colors.grey,
-                  ),
                   borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                  border: Border.all(color: R.colors.greyBorder),
                 ),
-                child: DropdownButton<String>(
-                  value: selectedClass,
-                  items: Kelas.map(
-                    (e) => DropdownMenuItem<String>(
-                      child: Text(e),
-                      value: e,
-                    ),
-                  ).toList(),
-                  onChanged: (String? val) {
-                    selectedClass = val!;
-                    setState(() {});
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                      value: selectedClass,
+                      items: classSlta
+                          .map(
+                            (e) => DropdownMenuItem<String>(
+                              child: Text(e),
+                              value: e,
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (String? val) {
+                        selectedClass = val!;
+                        setState(() {});
+                      }),
+                ),
+              ),
+              SizedBox(height: 5),
+              RegisterTextField(
+                hintText: 'Nama Sekolah',
+                title: "Nama Sekolah",
+                controller: schoolNameController,
+              ),
+              // Spacer(),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: ButtonLogin(
+                  onTap: () async {
+                    final json = {
+                      "email": emailController.text,
+                      "nama_lengkap": fullNameController.text,
+                      "nama_sekolah": schoolNameController.text,
+                      "kelas": selectedClass,
+                      "gender": gender,
+                      "foto": UserEmail.getUserPhotoUrl(),
+                    };
+                    print(json);
+                    final result = await AuthApi().postRegister(json);
+                    if (result.status == Status.success) {
+                      final registerResult = UserByEmail.fromJson(result.data!);
+                      if (registerResult.status == 1) {
+                        await PreferenceHelper()
+                            .setUserData(registerResult.data!);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            MainPage.route, (context) => false);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(registerResult.message!),
+                          ),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              "Terjadi kesalahan, silahkan ulangi kembali"),
+                        ),
+                      );
+                    }
                   },
-                ),
-              ),
-              const SizedBox(height: 15),
-              const RegisterTextField(
-                title: 'Nama Sekolah',
-                hintText: 'Masukan nama sekolah anda',
-              ),
-              const SizedBox(height: 90),
-              ButtonLogin(
-                // Button Register
-                onTap: () {
-                  // print(emailController.text);
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      MainPage.route, (context) => false);
-                },
-                backgroundColor: R.colors.primary,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      R.strings.daftar,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
+                  backgroundColor: R.colors.primary,
+                  borderColor: R.colors.primary,
+                  child: Text(
+                    R.strings.daftar,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                  ],
+                  ),
                 ),
-                borderColor: R.colors.primary,
               ),
             ],
           ),
@@ -227,10 +267,11 @@ class RegisterTextField extends StatelessWidget {
     required this.title,
     required this.hintText,
     this.controller,
+    this.enabled = true,
   }) : super(key: key);
-
   final String title;
   final String hintText;
+  final bool enabled;
   final TextEditingController? controller;
 
   @override
@@ -240,30 +281,30 @@ class RegisterTextField extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 15),
+        SizedBox(height: 5),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: R.colors.grey,
-            ),
             borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+            border: Border.all(color: R.colors.greyBorder),
           ),
           child: TextField(
+            enabled: enabled,
             controller: controller,
             decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
-                hintStyle: const TextStyle(color: Colors.grey)),
+                hintStyle: TextStyle(
+                  color: R.colors.greyHintText,
+                )),
           ),
         ),
-        const SizedBox(height: 15),
       ],
     );
   }

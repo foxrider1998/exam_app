@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/firebase_options.dart';
+import 'package:exam_app/helpers/user_email.dart';
+import 'package:exam_app/models/network_response.dart';
+import 'package:exam_app/models/user_by_email.dart';
+import 'package:exam_app/repository/auth_api.dart';
 import 'package:exam_app/views/main_page.dart';
 import 'package:exam_app/views/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,41 +13,46 @@ import 'login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'register_page.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
-  static const String route = "splash_screen";
+  static const String route = "spash_screen";
 
-  Future<void> initializeDefault() async {
-    FirebaseApp app = await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    print('Initialized default app $app');
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(const Duration(seconds: 5), () async {
+      final user = UserEmail.getUserEmail();
+
+      if (user != null) {
+        final dataUser = await AuthApi().getUserByEmail();
+        if (dataUser.status == Status.success) {
+          final data = UserByEmail.fromJson(dataUser.data!);
+          if (data.status == 1) {
+            Navigator.of(context).pushReplacementNamed(MainPage.route);
+          } else {
+            Navigator.of(context).pushReplacementNamed(RegisterPage.route);
+          }
+        }
+      } else {
+        Navigator.of(context).pushReplacementNamed(LoginPage.route);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Timer(
-      const Duration(seconds: 2),
-      () {
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(builder: (context) => LoginPage()),
-        // );
-        final user = FirebaseAuth.instance.currentUser;
-
-        if (user != null) {
-          // Redirect Register or Home
-          Navigator.of(context).pushNamed(MainPage.route);
-        } else {
-          Navigator.of(context).pushNamed(LoginPage.route);
-        }
-      },
-    );
     return Scaffold(
       backgroundColor: R.colors.primary,
       body: Center(
         child: Image.asset(
           R.assets.icSplash,
-          height: 40,
+          width: MediaQuery.of(context).size.width * 0.5,
         ),
       ),
     );

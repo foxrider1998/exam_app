@@ -1,5 +1,6 @@
 import 'package:exam_app/views/login_page.dart';
 import 'package:exam_app/views/main/latihan_soal/mapel_page.dart';
+import 'package:exam_app/views/main/latihan_soal/paket_soal_page.dart';
 import 'package:exam_app/views/main_page.dart';
 import 'package:exam_app/views/register_page.dart';
 import 'package:exam_app/views/splash_screen.dart';
@@ -39,8 +40,8 @@ class MyApp extends StatelessWidget {
         LoginPage.route: (context) => const LoginPage(),
         RegisterPage.route: (context) => const RegisterPage(),
         MainPage.route: (context) => const MainPage(),
-        // MapelPage.route: (context) => const MapelPage(mapel: null,),
-        // PakeSoalPage.route: (context) => const PakeSoalPage(),
+        //  MapelPage.route: (context) => const MapelPage(mapel: null,),
+        // PakeSoalPage.route: (context) => const PakeSoalPage(id: '',),
       },
     );
   }

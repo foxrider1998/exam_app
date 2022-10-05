@@ -1,8 +1,8 @@
+import 'package:exam_app/constants/r.dart';
+import 'package:exam_app/models/network_response.dart';
+import 'package:exam_app/models/result_response.dart';
+import 'package:exam_app/repository/latihan_soal_api.dart';
 import 'package:flutter/material.dart';
-import 'package:git_project/constants/r.dart';
-import 'package:git_project/models/network_response.dart';
-import 'package:git_project/models/result_response.dart';
-import 'package:git_project/repository/latihan_soal_api.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({Key? key, required this.exerciseId}) : super(key: key);

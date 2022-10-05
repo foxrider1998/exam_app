@@ -1,11 +1,12 @@
+import 'package:exam_app/constants/r.dart';
+import 'package:exam_app/helpers/user_email.dart';
+import 'package:exam_app/models/kerjakan_soal_list.dart';
+import 'package:exam_app/models/network_response.dart';
+import 'package:exam_app/repository/latihan_soal_api.dart';
+import 'package:exam_app/views/main/latihan_soal/result_page.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_html/flutter_html.dart';
-import 'package:git_project/constants/r.dart';
-import 'package:git_project/helpers/user_email.dart';
-import 'package:git_project/models/kerjakan_soal_list.dart';
-import 'package:git_project/models/network_response.dart';
-import 'package:git_project/repository/latihan_soal_api.dart';
-import 'package:git_project/view/main/latihan_soal/result_page.dart';
 
 class KerjakanLatihanSoalPage extends StatefulWidget {
   const KerjakanLatihanSoalPage({Key? key, required this.id}) : super(key: key);
@@ -53,7 +54,7 @@ class _KerjakanLatihanSoalPageState extends State<KerjakanLatihanSoalPage>
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: R.colors.primary,
+                        backgroundColor: R.colors.primary,
                         fixedSize: Size(153, 33),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),

@@ -6,6 +6,7 @@ import 'package:exam_app/models/network_response.dart';
 import 'package:exam_app/models/user_by_email.dart';
 import 'package:exam_app/repository/latihan_soal_api.dart';
 import 'package:exam_app/views/main/latihan_soal/mapel_page.dart';
+import 'package:exam_app/views/main/latihan_soal/paket_soal_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

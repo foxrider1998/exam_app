@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, sort_child_properties_last
+// ignore_for_file: non_constant_identifier_names, sort_child_properties_last, use_build_context_synchronously
 
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/helpers/preference_helper.dart';
@@ -52,18 +52,18 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff0f3f5),
+      backgroundColor: const Color(0xfff0f3f5),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight + 20),
+        preferredSize: const Size.fromHeight(kToolbarHeight + 20),
         child: AppBar(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25.0),
                   bottomRight: Radius.circular(25.0))),
           elevation: 0,
           backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          title: Text(
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: const Text(
             "Yuk isi data diri!",
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.w700, fontSize: 18),
@@ -87,15 +87,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 title: "Nama Lengkap",
                 controller: fullNameController,
               ),
-              SizedBox(height: 5),
-              Text(
+              const SizedBox(height: 5),
+              const Text(
                 "Jenis Kelamin",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Row(
                 children: [
                   Expanded(
@@ -124,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: gender.toLowerCase() ==
                                     "Laki-laki".toLowerCase()
                                 ? Colors.white
-                                : Color(0xff282828),
+                                : const Color(0xff282828),
                           ),
                         ),
                       ),
@@ -154,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             fontSize: 14,
                             color: gender == "Perempuan"
                                 ? Colors.white
-                                : Color(0xff282828),
+                                : const Color(0xff282828),
                           ),
                         ),
                       ),
@@ -162,18 +162,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 5),
-              Text(
+              const SizedBox(height: 5),
+              const Text(
                 "Kelas",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.white,
@@ -196,7 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }),
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               RegisterTextField(
                 hintText: 'Nama Sekolah',
                 title: "Nama Sekolah",
@@ -234,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text(
                               "Terjadi kesalahan, silahkan ulangi kembali"),
                         ),
@@ -245,7 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   borderColor: R.colors.primary,
                   child: Text(
                     R.strings.daftar,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -281,14 +281,14 @@ class RegisterTextField extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Colors.white,

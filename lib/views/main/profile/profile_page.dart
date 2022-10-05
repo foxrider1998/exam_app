@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/helpers/preference_helper.dart';
 import 'package:exam_app/models/user_by_email.dart';
@@ -44,8 +46,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   .push(MaterialPageRoute(builder: (BuildContext context) {
                 return EditProfilePage();
               }));
-              print("result");
-              print(result);
               if (result == true) {
                 getUserData();
               }

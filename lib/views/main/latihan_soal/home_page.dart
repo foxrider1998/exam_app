@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/helpers/preference_helper.dart';
 import 'package:exam_app/models/banner_list.dart';
@@ -41,7 +43,6 @@ class _HomePageState extends State<HomePage> {
 // Get any messages which caused the application to open from
     // a terminated state.
     final tokenFcm = await FirebaseMessaging.instance.getToken();
-    print("tokenfcm: $tokenFcm");
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
 
@@ -63,17 +64,11 @@ class _HomePageState extends State<HomePage> {
       sound: true,
     );
 
-    print('User granted permission: ${settings.authorizationStatus}');
     // Also handle any interaction when the app is in the background via a
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((event) {});
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
+      if (message.notification != null) {}
     });
   }
 

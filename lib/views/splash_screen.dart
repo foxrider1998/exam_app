@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, use_build_context_synchronously
+
 import 'dart:async';
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/firebase_options.dart';
@@ -11,7 +13,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'register_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

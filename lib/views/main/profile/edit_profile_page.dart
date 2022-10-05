@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/helpers/user_email.dart';
 import 'package:exam_app/models/network_response.dart';
@@ -66,10 +68,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         elevation: 0,
         // backgroundColor: Colors.white,
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
+        // ignore: prefer_const_constructors
         title: Text(
           "Edit Akun",
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
         ),
       ),
@@ -91,7 +94,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 title: "Nama Lengkap",
                 controller: fullNameController,
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 "Jenis Kelamin",
                 style: TextStyle(
@@ -99,7 +102,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     fontWeight: FontWeight.w600,
                     color: R.colors.greySubtitle),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Row(
                 children: [
                   Expanded(
@@ -108,7 +111,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
-                          primary:
+                          backgroundColor:
                               gender.toLowerCase() == "Laki-laki".toLowerCase()
                                   ? R.colors.primary
                                   : Colors.white,
@@ -128,7 +131,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             color: gender.toLowerCase() ==
                                     "Laki-laki".toLowerCase()
                                 ? Colors.white
-                                : Color(0xff282828),
+                                : const Color(0xff282828),
                           ),
                         ),
                       ),
@@ -158,7 +161,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             fontSize: 14,
                             color: gender == "Perempuan"
                                 ? Colors.white
-                                : Color(0xff282828),
+                                : const Color(0xff282828),
                           ),
                         ),
                       ),
@@ -166,7 +169,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 "Kelas",
                 style: TextStyle(
@@ -174,10 +177,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     fontWeight: FontWeight.w600,
                     color: R.colors.greySubtitle),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.white,
@@ -200,7 +203,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       }),
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               EditProfileTextField(
                 hintText: 'Nama Sekolah',
                 title: "Nama Sekolah",
@@ -233,7 +236,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content:
                             Text("Terjadi kesalahan, silahkan ulangi kembali"),
                       ),
@@ -244,7 +247,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 borderColor: R.colors.primary,
                 child: Text(
                   R.strings.perbaharuiAkun,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -287,7 +290,7 @@ class EditProfileTextField extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: R.colors.greySubtitle),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           TextField(
             enabled: enabled,
             controller: controller,

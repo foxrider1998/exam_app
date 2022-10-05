@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, avoid_print
+
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/helpers/user_email.dart';
 import 'package:exam_app/models/kerjakan_soal_list.dart';

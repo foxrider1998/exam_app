@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/models/network_response.dart';
 import 'package:exam_app/models/paket_soal_list.dart';
@@ -65,23 +67,7 @@ class _PakeSoalPageState extends State<PakeSoalPage> {
                                 child: PaketSoalWidget(data: currentPaketSoal));
                           }).toList(),
                         ),
-                      )
-
-                // GridView.count(
-                //     mainAxisSpacing: 10,
-                //     crossAxisSpacing: 10,
-                //     crossAxisCount: 2,
-                //     childAspectRatio: 4 / 3,
-                //     children:
-
-                //     // [
-                //     // PaketSoalWodget(),
-                //     // PaketSoalWodget(),
-                //     // PaketSoalWodget(),
-                //     // PaketSoalWodget()
-                //     // ],
-                //     ),
-                ),
+                      )),
           ],
         ),
       ),

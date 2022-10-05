@@ -18,8 +18,8 @@ class MapelList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -60,14 +60,14 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['course_id'] = this.courseId;
-    data['major_name'] = this.majorName;
-    data['course_category'] = this.courseCategory;
-    data['course_name'] = this.courseName;
-    data['url_cover'] = this.urlCover;
-    data['jumlah_materi'] = this.jumlahMateri;
-    data['jumlah_done'] = this.jumlahDone;
-    data['progress'] = this.progress;
+    data['course_id'] = courseId;
+    data['major_name'] = majorName;
+    data['course_category'] = courseCategory;
+    data['course_name'] = courseName;
+    data['url_cover'] = urlCover;
+    data['jumlah_materi'] = jumlahMateri;
+    data['jumlah_done'] = jumlahDone;
+    data['progress'] = progress;
     return data;
   }
 }

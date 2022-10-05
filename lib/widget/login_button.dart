@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, unnecessary_import, implementation_imports
+
 import 'package:exam_app/constants/r.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';

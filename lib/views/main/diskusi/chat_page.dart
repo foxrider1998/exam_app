@@ -48,7 +48,7 @@ class _ChatPageState extends State<ChatPage> {
     final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Diskusi Soal"),
+        title: const Text("Diskusi Soal"),
       ),
       body: Column(
         children: [
@@ -60,7 +60,7 @@ class _ChatPageState extends State<ChatPage> {
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
                     if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     return ListView.builder(
@@ -72,7 +72,7 @@ class _ChatPageState extends State<ChatPage> {
                         final currentDate =
                             (currentChat["time"] as Timestamp?)?.toDate();
                         return Container(
-                          margin: EdgeInsets.only(bottom: 10),
+                          margin: const EdgeInsets.only(bottom: 10),
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: Column(
                               crossAxisAlignment: user.uid == currentChat["uid"]
@@ -81,7 +81,7 @@ class _ChatPageState extends State<ChatPage> {
                               children: [
                                 Text(
                                   currentChat["nama"],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 10,
                                     color: Color(0xff5200FF),
                                   ),
@@ -97,7 +97,7 @@ class _ChatPageState extends State<ChatPage> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 ListTile(
-                                                  title: Text("Salin"),
+                                                  title: const Text("Salin"),
                                                   onTap: () {
                                                     Navigator.pop(context);
                                                     FlutterClipboard.copy(
@@ -107,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
                                                             ScaffoldMessenger
                                                                     .of(context)
                                                                 .showSnackBar(
-                                                                    SnackBar(
+                                                                    const SnackBar(
                                                                         content:
                                                                             Text("Text telah disalin"))));
                                                   },
@@ -115,7 +115,7 @@ class _ChatPageState extends State<ChatPage> {
                                                 if (user.uid ==
                                                     currentChat["uid"])
                                                   ListTile(
-                                                    title: Text("Hapus"),
+                                                    title: const Text("Hapus"),
                                                     onTap: () {
                                                       String id =
                                                           currentChat.id;
@@ -125,9 +125,10 @@ class _ChatPageState extends State<ChatPage> {
                                                       }).then((value) {
                                                         ScaffoldMessenger.of(
                                                                 context)
-                                                            .showSnackBar(SnackBar(
-                                                                content: Text(
-                                                                    "Text telah dihapus")));
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                                    content: Text(
+                                                                        "Text telah dihapus")));
                                                         Navigator.pop(context);
                                                       });
                                                     },
@@ -138,23 +139,23 @@ class _ChatPageState extends State<ChatPage> {
                                         });
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 4),
                                     decoration: BoxDecoration(
                                         color: user.uid == currentChat["uid"]
                                             ? Colors.green.withOpacity(0.5)
-                                            : Color(0xffffdcdc),
+                                            : const Color(0xffffdcdc),
                                         borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
+                                          bottomLeft: const Radius.circular(10),
                                           bottomRight:
                                               user.uid == currentChat["uid"]
-                                                  ? Radius.circular(0)
-                                                  : Radius.circular(10),
-                                          topRight: Radius.circular(10),
+                                                  ? const Radius.circular(0)
+                                                  : const Radius.circular(10),
+                                          topRight: const Radius.circular(10),
                                           topLeft:
                                               user.uid != currentChat["uid"]
-                                                  ? Radius.circular(0)
-                                                  : Radius.circular(10),
+                                                  ? const Radius.circular(0)
+                                                  : const Radius.circular(10),
                                         )),
                                     child: baloonChat(currentChat),
                                   ),
@@ -180,14 +181,14 @@ class _ChatPageState extends State<ChatPage> {
             child: Container(
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
-                    offset: Offset(0, -1),
+                    offset: const Offset(0, -1),
                     blurRadius: 10,
                     color: Colors.black.withOpacity(0.25))
               ]),
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add,
                       color: Colors.blue,
                     ),
@@ -195,7 +196,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 4),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Row(
                         children: [
                           Expanded(
@@ -205,7 +206,7 @@ class _ChatPageState extends State<ChatPage> {
                                 controller: textController,
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.camera_alt,
                                       color: Colors.blue,
                                     ),
@@ -256,7 +257,7 @@ class _ChatPageState extends State<ChatPage> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   hintText: "Tulis pesan disini..",
-                                  hintStyle: TextStyle(
+                                  hintStyle: const TextStyle(
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -268,7 +269,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send,
                       color: Colors.blue,
                     ),
@@ -320,8 +321,8 @@ class _ChatPageState extends State<ChatPage> {
             currentChat["file_url"],
             errorBuilder: (context, error, stackTrace) {
               return Container(
-                padding: EdgeInsets.all(10),
-                child: Icon(Icons.warning),
+                padding: const EdgeInsets.all(10),
+                child: const Icon(Icons.warning),
               );
             },
           )

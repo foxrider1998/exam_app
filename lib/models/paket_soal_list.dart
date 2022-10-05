@@ -18,8 +18,8 @@ class PaketSoalList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -57,13 +57,13 @@ class PaketSoalData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['exercise_id'] = this.exerciseId;
-    data['exercise_title'] = this.exerciseTitle;
-    data['access_type'] = this.accessType;
-    data['icon'] = this.icon;
-    data['exercise_user_status'] = this.exerciseUserStatus;
-    data['jumlah_soal'] = this.jumlahSoal;
-    data['jumlah_done'] = this.jumlahDone;
+    data['exercise_id'] = exerciseId;
+    data['exercise_title'] = exerciseTitle;
+    data['access_type'] = accessType;
+    data['icon'] = icon;
+    data['exercise_user_status'] = exerciseUserStatus;
+    data['jumlah_soal'] = jumlahSoal;
+    data['jumlah_done'] = jumlahDone;
     return data;
   }
 }

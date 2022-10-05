@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:exam_app/constants/r.dart';
 import 'package:exam_app/models/network_response.dart';
 import 'package:exam_app/models/result_response.dart';
@@ -50,6 +52,7 @@ class _ResultPageState extends State<ResultPage> {
                               Icons.close,
                               color: Colors.white,
                             )),
+                        // ignore: prefer_const_constructors
                         Text(
                           "Tutup",
                           style: TextStyle(

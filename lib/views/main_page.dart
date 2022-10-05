@@ -16,14 +16,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   @override
-  // Future<void> initState() async {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  // }
-
   final _pc = PageController();
   int index = 0;
 

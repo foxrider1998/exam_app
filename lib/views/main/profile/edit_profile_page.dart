@@ -73,54 +73,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: ButtonLogin(
-            onTap: () async {
-              final json = {
-                "email": emailController.text,
-                "nama_lengkap": fullNameController.text,
-                "nama_sekolah": schoolNameController.text,
-                "kelas": selectedClass,
-                "gender": gender,
-                "foto": UserEmail.getUserPhotoUrl(),
-              };
-              print(json);
-              final result = await AuthApi().postUpdateUSer(json);
-              if (result.status == Status.success) {
-                final registerResult = UserByEmail.fromJson(result.data!);
-                if (registerResult.status == 1) {
-                  await PreferenceHelper().setUserData(registerResult.data!);
-                  Navigator.pop(context, true);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(registerResult.message!),
-                    ),
-                  );
-                }
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Terjadi kesalahan, silahkan ulangi kembali"),
-                  ),
-                );
-              }
-            },
-            backgroundColor: R.colors.primary,
-            borderColor: R.colors.primary,
-            child: Text(
-              R.strings.perbaharuiAkun,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -252,6 +205,51 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 hintText: 'Nama Sekolah',
                 title: "Nama Sekolah",
                 controller: schoolNameController,
+              ),
+              ButtonLogin(
+                onTap: () async {
+                  final json = {
+                    "email": emailController.text,
+                    "nama_lengkap": fullNameController.text,
+                    "nama_sekolah": schoolNameController.text,
+                    "kelas": selectedClass,
+                    "gender": gender,
+                    "foto": UserEmail.getUserPhotoUrl(),
+                  };
+                  print(json);
+                  final result = await AuthApi().postUpdateUSer(json);
+                  if (result.status == Status.success) {
+                    final registerResult = UserByEmail.fromJson(result.data!);
+                    if (registerResult.status == 1) {
+                      await PreferenceHelper()
+                          .setUserData(registerResult.data!);
+                      Navigator.pop(context, true);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(registerResult.message!),
+                        ),
+                      );
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text("Terjadi kesalahan, silahkan ulangi kembali"),
+                      ),
+                    );
+                  }
+                },
+                backgroundColor: R.colors.primary,
+                borderColor: R.colors.primary,
+                child: Text(
+                  R.strings.perbaharuiAkun,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
               // Spacer(),
             ],

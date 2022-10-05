@@ -1,8 +1,12 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-
 import 'package:exam_app/constants/r.dart';
+import 'package:exam_app/helpers/preference_helper.dart';
+import 'package:exam_app/models/banner_list.dart';
+import 'package:exam_app/models/mapel_list.dart';
+import 'package:exam_app/models/network_response.dart';
+import 'package:exam_app/models/user_by_email.dart';
+import 'package:exam_app/repository/latihan_soal_api.dart';
 import 'package:exam_app/views/main/latihan_soal/mapel_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,86 +18,209 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  MapelList? mapelList;
+  getMapel() async {
+    final mapelREsult = await LatihanSoalApi().getMapel();
+    if (mapelREsult.status == Status.success) {
+      mapelList = MapelList.fromJson(mapelREsult.data!);
+      setState(() {});
+    }
+  }
+
+  BannerList? bannerList;
+  getBanner() async {
+    final banner = await LatihanSoalApi().getBanner();
+    if (banner.status == Status.success) {
+      bannerList = BannerList.fromJson(banner.data!);
+      setState(() {});
+    }
+  }
+
+  setupFcm() async {
+// Get any messages which caused the application to open from
+    // a terminated state.
+    final tokenFcm = await FirebaseMessaging.instance.getToken();
+    print("tokenfcm: $tokenFcm");
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    // if (initialMessage != null) {
+    //   _handleMessage(initialMessage);
+    // }
+
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    print('User granted permission: ${settings.authorizationStatus}');
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {});
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
+
+  UserData? dataUser;
+  Future getUserDAta() async {
+    dataUser = await PreferenceHelper().getUserData();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getMapel();
+    getBanner();
+    setupFcm();
+    getUserDAta();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF3F7F8),
-      // appBar: AppBar(),
+      backgroundColor: R.colors.grey,
       body: SafeArea(
         child: ListView(
           children: [
             _buildUserHomeProfile(),
             _buildTopBanner(context),
-            _buildHomeListMapel(),
+            _buildHomeListMapel(mapelList),
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 21,
-              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Text(
-                        "Terbaru",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Text(
+                      "Terbaru",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                    ],
-                  ),
-                  Container(
-                    height: 150,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(R.assets.banneHome),
-                        );
-                      },
                     ),
                   ),
+                  SizedBox(height: 10),
+                  bannerList == null
+                      ? Container(
+                          height: 70,
+                          width: double.infinity,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Container(
+                          height: 150,
+                          child: ListView.builder(
+                            itemCount: bannerList!.data!.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: ((context, index) {
+                              final currentBanner = bannerList!.data![index];
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    currentBanner.eventImage!,
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                  SizedBox(height: 35),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),
     );
   }
 
-  Container _buildHomeListMapel() {
+  Container _buildHomeListMapel(MapelList? list) {
+    // print("list!.data.length");
+    // print(list?.data!.length);
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 21,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 21),
       child: Column(
         children: [
           Row(
             children: [
-              const Text(
+              Text(
                 "Pilih Pelajaran",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
-              const Spacer(),
+              Spacer(),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(MapelPage.route);
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return MapelPage(mapel: mapelList!);
+                  }));
                 },
-                child: const Text("Lihat Semua"),
+                child: Text(
+                  "Lihat Semua",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: R.colors.primary),
+                ),
               )
             ],
           ),
-          const MapelWidget(),
-          const MapelWidget(),
-          const MapelWidget(),
+          list == null
+              ? Container(
+                  height: 70,
+                  width: double.infinity,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: list.data!.length > 3 ? 3 : list.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final currentMapel = list.data![index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PakeSoalPage(id: currentMapel.courseId!),
+                          ),
+                        );
+                      },
+                      child: MapelWidget(
+                        title: currentMapel.courseName!,
+                        totalPacket: currentMapel.jumlahMateri!,
+                        totalDone: currentMapel.jumlahDone!,
+                      ),
+                    );
+                  },
+                )
         ],
       ),
     );
@@ -102,49 +229,48 @@ class _HomePageState extends State<HomePage> {
   Container _buildTopBanner(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
-        horizontal: 20,
+        horizontal: 20.0,
         // vertical: 15,
       ),
       decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      width: double.infinity,
+          color: R.colors.primary, borderRadius: BorderRadius.circular(20)),
       height: 147,
-      child: Stack(children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
-          ),
-          child: const Text(
-            "Mau Kerjain Latihan Soal Apa Hari Ini?",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 15,
+            ),
+            child: Text(
+              "Mau kerjain latihan soal apa hari ini?",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        Positioned(
-          right: 0,
-          bottom: 0,
-          child: Image.asset(
-            R.assets.icHome,
-            width: MediaQuery.of(context).size.width * 0.5,
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Image.asset(
+              R.assets.imgHome,
+              width: MediaQuery.of(context).size.width * 0.5,
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 
   Padding _buildUserHomeProfile() {
-    final user = FirebaseAuth.instance.currentUser;
     return Padding(
       padding: const EdgeInsets.symmetric(
+        horizontal: 20.0,
         vertical: 15,
-        horizontal: 20,
       ),
       child: Row(
         children: [
@@ -153,27 +279,24 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Hi, ${user?.displayName}",
-                  style: GoogleFonts.poppins().copyWith(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  "Hi, " + (dataUser?.userName ?? "Nama User"),
+                  style: GoogleFonts.poppins()
+                      .copyWith(fontSize: 12, fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  "Selamat Datang",
+                  "Selamat datang",
                   style: GoogleFonts.poppins().copyWith(
-                    fontSize: 14,
+                    fontSize: 12,
+                    // fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
             ),
           ),
-          Image.network(
-            "${user?.photoURL}",
-            // Image.asset(
-            // R.assets.imgUser,
-            height: 45,
-            width: 45,
+          Image.asset(
+            R.assets.imgUser,
+            width: 35,
+            height: 35,
           ),
         ],
       ),
@@ -184,77 +307,92 @@ class _HomePageState extends State<HomePage> {
 class MapelWidget extends StatelessWidget {
   const MapelWidget({
     Key? key,
+    required this.title,
+    required this.totalDone,
+    required this.totalPacket,
   }) : super(key: key);
+
+  final String title;
+  final int? totalDone;
+  final int? totalPacket;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 7),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 21,
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 53,
-            width: 53,
-            decoration: BoxDecoration(
-              color: const Color(0xffF3F7F8),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: const EdgeInsets.all(13),
-            child: Image.asset(R.assets.icAtom),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Matematika",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      margin: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 21),
+      child: Row(children: [
+        Container(
+          height: 53,
+          width: 53,
+          padding: EdgeInsets.all(13),
+          decoration: BoxDecoration(
+              color: R.colors.grey, borderRadius: BorderRadius.circular(10)),
+          child: Image.asset(R.assets.icAtom),
+        ),
+        SizedBox(
+          width: 6,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
                 ),
-                const Text(
-                  "0/50 Paket Latihan Soal",
-                  style: TextStyle(
-                    color: Colors.grey,
+              ),
+              Text(
+                "$totalDone/$totalPacket Paket latihan soal",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: R.colors.greySubtitleHome),
+              ),
+              SizedBox(height: 5),
+              Stack(
+                children: [
+                  Container(
+                    height: 5,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: R.colors.grey,
+                        borderRadius: BorderRadius.circular(10)),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(20),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: totalDone!,
+                        child: Container(
+                          height: 5,
+                          // width: MediaQuery.of(context).size.width * 0.4,
+                          decoration: BoxDecoration(
+                              color: R.colors.primary,
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
                       ),
-                      height: 12,
-                      width: double.infinity,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20),
+                      Expanded(
+                        flex: totalPacket! - totalDone!,
+                        child: Container(
+                            // height: 5,
+                            // width: MediaQuery.of(context).size.width * 0.4,
+                            // decoration: BoxDecoration(
+                            //     color: R.colors.primary,
+                            //     borderRadius: BorderRadius.circular(10)),
+                            ),
                       ),
-                      height: 12,
-                      width: MediaQuery.of(context).size.width * 0.4,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
-      ),
+        )
+      ]),
     );
   }
 }

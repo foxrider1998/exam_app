@@ -288,9 +288,9 @@ class _BottomsheetConfirmationState extends State<BottomsheetConfirmation> {
     return Container(
       child: Container(
         padding: EdgeInsets.all(20),
-        decoration: new BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: new BorderRadius.only(
+          borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(25.0),
             topRight: const Radius.circular(25.0),
           ),
